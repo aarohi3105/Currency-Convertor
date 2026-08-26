@@ -2,11 +2,14 @@ package com.example.currencyconvertor.Controller;
 
 import com.example.currencyconvertor.DTO.ConversionResponse;
 import com.example.currencyconvertor.Service.CurrencyService;
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Validated
 public class CurrencyController {
 
     private final CurrencyService currencyService;
@@ -18,7 +21,7 @@ public class CurrencyController {
     @GetMapping("/convert")
     public ConversionResponse convert(@RequestParam String from,
                                       @RequestParam String to,
-                                      @RequestParam double amount) {
+                                      @Positive(message="amount must be greater than zero") @RequestParam double amount) {
         return currencyService.convertCurrency(from, to, amount);
     }
 }

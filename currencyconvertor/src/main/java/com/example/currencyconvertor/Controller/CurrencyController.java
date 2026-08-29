@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @Validated
 public class CurrencyController {
@@ -24,5 +26,10 @@ public class CurrencyController {
                                       @NotBlank(message = "To currency is required") @RequestParam String to,
                                       @Positive(message="amount must be greater than zero") @RequestParam double amount) {
         return currencyService.convertCurrency(from, to, amount);
+    }
+
+    @GetMapping("/currencies")
+    public Map<String, String> getCurrencies() {
+        return currencyService.getCurrencies();
     }
 }

@@ -26,4 +26,23 @@ public class GlobalExceptionHandler {
 
         return new ErrorResponse(errors); //jackson will convert this object into json format     <1>
     }
+
+
+    @ExceptionHandler(InvalidCurrencyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidCurrency(InvalidCurrencyException ex) {
+
+        return new ErrorResponse(
+                List.of(ex.getMessage())
+        );
+    }
+    @ExceptionHandler(ExternalApiException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorResponse handleExternalApiException(
+            ExternalApiException ex) {
+
+        return new ErrorResponse(
+                List.of(ex.getMessage())
+        );
+    }
 }

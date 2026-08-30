@@ -4,9 +4,11 @@ import com.example.currencyconvertor.DTO.ErrorResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,26 @@ public class GlobalExceptionHandler {
 
         return new ErrorResponse(
                 List.of(ex.getMessage())
+        );
+    }
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex) {
+
+        return new ErrorResponse(
+                List.of(ex.getName() + " must be a valid number")
+        );
+    }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingParameter(
+            MissingServletRequestParameterException ex) {
+
+        return new ErrorResponse(
+                List.of(ex.getParameterName() + " parameter is required")
         );
     }
 }

@@ -27,6 +27,16 @@ public class CurrencyService {
 //        Map<String, String> currencies = currencyClient.getCurrencies();
         from = from.trim().toUpperCase();
         to = to.trim().toUpperCase();
+        if(from.equals(to)){
+            return new ConversionResponse(
+                from,
+                    to,
+                    amount,
+                    1.0,
+                    amount
+            );
+            }
+
         Map<String, String> currencies =
                 getSupportedCurrencies();
 
@@ -44,7 +54,7 @@ public class CurrencyService {
 
         double exchangeRate = response.getRate();
 
-        double convertedAmount = amount * exchangeRate;
+        double convertedAmount = Math.round(amount * exchangeRate* 100.0)/100.0;
 
         return new ConversionResponse(
                 from,
